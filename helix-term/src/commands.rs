@@ -1,4 +1,5 @@
 pub(crate) mod dap;
+mod evil;
 pub(crate) mod lsp;
 pub(crate) mod typed;
 
@@ -1255,6 +1256,10 @@ fn goto_prev_paragraph(cx: &mut Context) {
 
 fn goto_next_paragraph(cx: &mut Context) {
     goto_para_impl(cx, movement::move_next_paragraph)
+}
+
+fn evil_move_paragraph_forward(cx: &mut Context) {
+    goto_para_impl(cx, move_fn);
 }
 
 fn goto_file_start(cx: &mut Context) {

@@ -1208,9 +1208,10 @@ comment-token = "#"
 scope = "source.lpf"
 file-types = ["lpf"]
 
-[[grammar]]
-name = "lpf"
-source = { git = "https://gitlab.com/TheZoq2/tree-sitter-lpf", rev = "db7372e60c722ca7f12ab359e57e6bf7611ab126" }
+#[[grammar]]
+#name = "lpf"
+#source = { git = "https://gitlab.com/TheZoq2/tree-sitter-lpf", rev = "db7372e60c722ca7f12ab359e57e6bf7611ab126" }
+
 
 [[language]]
 name = "julia"
@@ -1517,9 +1518,9 @@ comment-token = "%"
 block-comment-tokens = { start = "/*", end = "*/" }
 language-servers = [ "swipl" ]
 
-[[grammar]]
-name = "prolog"
-source = { git = "https://codeberg.org/foxy/tree-sitter-prolog", subpath = "grammars/prolog", rev = "d8d415f6a1cf80ca138524bcc395810b176d40fa" }
+#[[grammar]]
+#name = "prolog"
+#source = { git = "https://codeberg.org/foxy/tree-sitter-prolog", subpath = "grammars/prolog", rev = "d8d415f6a1cf80ca138524bcc395810b176d40fa" }
 
 [[language]]
 name = "tsq"
@@ -2268,9 +2269,9 @@ file-types = ["ha"]
 comment-token = "//"
 indent = { tab-width = 8, unit = "\t" }
 
-[[grammar]]
-name = "hare"
-source = { git = "https://git.sr.ht/~ecs/tree-sitter-hare", rev = "07035a248943575444aa0b893ffe306e1444c0ab" }
+#[[grammar]]
+#name = "hare"
+#source = { git = "https://git.sr.ht/~ecs/tree-sitter-hare", rev = "07035a248943575444aa0b893ffe306e1444c0ab" }
 
 [[language]]
 name = "devicetree"
@@ -2830,6 +2831,7 @@ file-types = [
   "nuspec",
   "osc",
   "osm",
+  "pain",
   "pt",
   "publishsettings",
   "pubxml",
@@ -2857,6 +2859,7 @@ file-types = [
   "glif",
   "ui",
   "sublime-snippet",
+  "xsd",
   "xsl",
   "mpd",
   "smil"
@@ -3360,9 +3363,9 @@ block-comment-tokens = { start = "/*", end = "*/" }
 language-servers = [ "blueprint-compiler" ]
 indent = { tab-width = 4, unit = "    " }
 
-[[grammar]]
-name = "blueprint"
-source = { git = "https://gitlab.com/gabmus/tree-sitter-blueprint", rev = "863cea9f83ad5637300478e0559262f1e791684b" }
+#[[grammar]]
+#name = "blueprint"
+#source = { git = "https://gitlab.com/gabmus/tree-sitter-blueprint", rev = "863cea9f83ad5637300478e0559262f1e791684b" }
 
 [[language]]
 name = "forth"
@@ -3401,9 +3404,9 @@ file-types = ["cmm", "t32"]
 comment-token = ";"
 indent = { tab-width = 2, unit = "  " }
 
-[[grammar]]
-name = "t32"
-source = { git = "https://gitlab.com/xasc/tree-sitter-t32", rev = "6da5e3cbabd376b566d04282005e52ffe67ef74a" }
+#[[grammar]]
+#name = "t32"
+#source = { git = "https://gitlab.com/xasc/tree-sitter-t32", rev = "6da5e3cbabd376b566d04282005e52ffe67ef74a" }
 
 [[language]]
 name = "webc"
@@ -4101,9 +4104,9 @@ indent = { tab-width = 4, unit = "    " }
 '"' = '"'
 '<' = '>'
 
-[[grammar]]
-name = "spade"
-source = { git = "https://gitlab.com/spade-lang/tree-sitter-spade", rev = "78bf09a88fc1d396f66b69879f908fc6bd2e6934" }
+#[[grammar]]
+#name = "spade"
+#source = { git = "https://gitlab.com/spade-lang/tree-sitter-spade", rev = "78bf09a88fc1d396f66b69879f908fc6bd2e6934" }
 
 [[language]]
 name = "amber"
@@ -4169,9 +4172,9 @@ roots = ["nginx.conf"]
 comment-token = "#"
 indent = { tab-width = 4, unit = "    " }
 
-[[grammar]]
-name = "nginx"
-source = { git = "https://gitlab.com/joncoole/tree-sitter-nginx", rev = "b4b61db443602b69410ab469c122c01b1e685aa0" }
+#[[grammar]]
+#name = "nginx"
+#source = { git = "https://gitlab.com/joncoole/tree-sitter-nginx", rev = "b4b61db443602b69410ab469c122c01b1e685aa0" }
 
 [[language]]
 name = "codeql"
@@ -4325,9 +4328,9 @@ file-types = [
 ]
 comment-tokens = "#"
 
-[[grammar]]
-name = "debian"
-source = { git = "https://gitlab.com/MggMuggins/tree-sitter-debian", rev = "9b3f4b78c45aab8a2f25a5f9e7bbc00995bc3dde" }
+#[[grammar]]
+#name = "debian"
+#source = { git = "https://gitlab.com/MggMuggins/tree-sitter-debian", rev = "9b3f4b78c45aab8a2f25a5f9e7bbc00995bc3dde" }
 
 [[language]]
 name = "pug"

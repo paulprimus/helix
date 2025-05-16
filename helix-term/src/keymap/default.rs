@@ -137,6 +137,8 @@ pub fn default() -> HashMap<Mode, KeyTrie> {
             "space" => add_newline_below,
         },
 
+        "}" => evil_move_paragraph_forward,
+
         "/" => search,
         "?" => rsearch,
         "n" => search_next,
