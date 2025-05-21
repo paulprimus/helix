@@ -4,6 +4,7 @@ pub(crate) mod lsp;
 pub(crate) mod typed;
 
 pub use dap::*;
+use evil::{evil_movement_paragraph_forward, CollapseMode, EvilCommands};
 use futures_util::FutureExt;
 use helix_event::status;
 use helix_stdx::{
@@ -597,6 +598,7 @@ impl MappableCommand {
         decrement, "Decrement item under cursor",
         record_macro, "Record macro",
         replay_macro, "Replay macro",
+        evil_move_paragraph_forward, "Move forward by paragraph (evil)",
         command_palette, "Open command palette",
         goto_word, "Jump to a two-character label",
         extend_to_word, "Extend to a two-character label",
@@ -1259,7 +1261,11 @@ fn goto_next_paragraph(cx: &mut Context) {
 }
 
 fn evil_move_paragraph_forward(cx: &mut Context) {
-    goto_para_impl(cx, move_fn);
+    println!("evil_move_paragraph_forward");
+    goto_para_impl(cx, evil_movement_paragraph_forward);
+    if cx.editor.mode != Mode::Select {
+        EvilCommands::collapse_selections(cx, CollapseMode::ToHead);
+    }
 }
 
 fn goto_file_start(cx: &mut Context) {
