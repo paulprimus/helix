@@ -1,10 +1,12 @@
 pub(crate) mod dap;
-mod evil;
+pub(crate) mod evil;
 pub(crate) mod lsp;
 pub(crate) mod typed;
 
 pub use dap::*;
-use evil::{evil_movement_paragraph_forward, CollapseMode, EvilCommands};
+use evil::{
+    evil_movement_paragraph_backward, evil_movement_paragraph_forward, CollapseMode, EvilCommands,
+};
 use futures_util::FutureExt;
 use helix_event::status;
 use helix_stdx::{
@@ -599,6 +601,7 @@ impl MappableCommand {
         record_macro, "Record macro",
         replay_macro, "Replay macro",
         evil_move_paragraph_forward, "Move forward by paragraph (evil)",
+        evil_move_paragraph_backward, "Move backward by paragraph (evil)",
         command_palette, "Open command palette",
         goto_word, "Jump to a two-character label",
         extend_to_word, "Extend to a two-character label",
@@ -1261,10 +1264,16 @@ fn goto_next_paragraph(cx: &mut Context) {
 }
 
 fn evil_move_paragraph_forward(cx: &mut Context) {
-    println!("evil_move_paragraph_forward");
     goto_para_impl(cx, evil_movement_paragraph_forward);
     if cx.editor.mode != Mode::Select {
         EvilCommands::collapse_selections(cx, CollapseMode::ToHead);
+    }
+}
+
+fn evil_move_paragraph_backward(cx: &mut Context) {
+    goto_para_impl(cx, evil_movement_paragraph_backward);
+    if cx.editor.mode != Mode::Select {
+        EvilCommands::collapse_selections(cx, CollapseMode::ToAnchor);
     }
 }
 

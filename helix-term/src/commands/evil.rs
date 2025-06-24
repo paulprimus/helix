@@ -119,8 +119,8 @@ pub fn evil_movement_paragraph_forward(
     count: usize,
     behaviour: Movement,
 ) -> Range {
-    let mut line = range.cursor_line(slice); // cursor line number
-    let last_char =
+    let mut line: usize = range.cursor_line(slice); // cursor line number
+    let last_char: bool =
         prev_grapheme_boundary(slice, slice.line_to_char(line + 1)) == range.cursor(slice);
 
     let curr_line_empty = rope_is_line_ending(slice.line(line));
@@ -154,6 +154,39 @@ pub fn evil_movement_paragraph_forward(
     }
 
     let head = slice.line_to_char(line);
+    let anchor = if behaviour == Movement::Move {
+        if curr_empty_to_line && last_char {
+            range.head
+        } else {
+            range.cursor(slice)
+        }
+    } else {
+        range.put_cursor(slice, head, true).anchor
+    };
 
-    Range::new(1, 1)
+    Range::new(anchor, head)
+}
+
+pub fn evil_movement_paragraph_backward(
+    slice: RopeSlice,
+    range: Range,
+    count: usize,
+    movement: Movement,
+) -> Range {
+    let mut line: usize = range.cursor_line(slice); // cursor line number
+    let first_char: bool =
+        prev_grapheme_boundary(slice, slice.line_to_char(line)) == range.cursor(slice);
+
+    let prev_line_empty = rope_is_line_ending(slice.line(line.saturating_sub(1)));
+    let current_line_empty = rope_is_line_ending(slice.line(line));
+
+    let prev_empty_to_line = prev_line_empty && !current_line_empty;
+
+    if (prev_empty_to_line && !first_char) {
+        line += 1;
+    }
+
+    let head = slice.line_to_char(line);
+    range.put_cursor(slice, head, true);
+    Range::new(range.head, head)
 }
