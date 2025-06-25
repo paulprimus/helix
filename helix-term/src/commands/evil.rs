@@ -1,8 +1,8 @@
 use std::borrow::Cow;
 
 use helix_core::{
-    graphemes::prev_grapheme_boundary, line_ending::rope_is_line_ending, movement::Movement, Range,
-    RopeSlice,
+    graphemes::prev_grapheme_boundary, line_ending::rope_is_line_ending, movement::Movement,
+    ropey::iter::Lines, Range, RopeSlice,
 };
 
 use super::Context;
@@ -136,7 +136,7 @@ pub fn evil_movement_paragraph_forward(
     }
 
     let mut lines = slice.lines_at(line).map(rope_is_line_ending).peekable();
-    let mut last_line = line;
+    let last_line = line;
 
     for _ in 0..count {
         while lines.next_if(|&e| e).is_some() {
@@ -173,20 +173,22 @@ pub fn evil_movement_paragraph_backward(
     count: usize,
     movement: Movement,
 ) -> Range {
-    let mut line: usize = range.cursor_line(slice); // cursor line number
+    let mut line_nr: usize = range.cursor_line(slice); // cursor line number
     let first_char: bool =
-        prev_grapheme_boundary(slice, slice.line_to_char(line)) == range.cursor(slice);
+        prev_grapheme_boundary(slice, slice.line_to_char(line_nr)) == range.cursor(slice);
 
-    let prev_line_empty = rope_is_line_ending(slice.line(line.saturating_sub(1)));
-    let current_line_empty = rope_is_line_ending(slice.line(line));
+    let prev_line_empty = rope_is_line_ending(slice.line(line_nr.saturating_sub(1)));
+    let current_line_empty = rope_is_line_ending(slice.line(line_nr));
 
     let prev_empty_to_line = prev_line_empty && !current_line_empty;
 
-    if (prev_empty_to_line && !first_char) {
-        line += 1;
+    if prev_empty_to_line && !first_char {
+        line_nr += 1;
     }
 
-    let head = slice.line_to_char(line);
-    range.put_cursor(slice, head, true);
-    Range::new(range.head, head)
+    let lines: Lines<'static> = slice.lines_at(line_nr);
+    lines.reverse();
+
+    range.put_cursor(slice, lines, true);
+    Range::new(range.head, lines)
 }
