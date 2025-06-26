@@ -167,16 +167,17 @@ pub fn evil_movement_paragraph_forward(
     Range::new(anchor, head)
 }
 
-pub fn evil_movement_paragraph_backward(
-    slice: RopeSlice,
+pub fn evil_movement_paragraph_backward<'a>(
+    slice: RopeSlice<'a>,
     range: Range,
     count: usize,
     movement: Movement,
 ) -> Range {
     let mut line_nr: usize = range.cursor_line(slice); // cursor line number
-    let first_char: bool =
-        prev_grapheme_boundary(slice, slice.line_to_char(line_nr)) == range.cursor(slice);
+                                                       // let first_char: bool =
+                                                       // prev_grapheme_boundary(slice, slice.line_to_char(line_nr)) == range.cursor(slice);
 
+    let first_char: bool = slice.line_to_char(line_nr) == range.cursor(slice);
     let prev_line_empty = rope_is_line_ending(slice.line(line_nr.saturating_sub(1)));
     let current_line_empty = rope_is_line_ending(slice.line(line_nr));
 
@@ -186,9 +187,38 @@ pub fn evil_movement_paragraph_backward(
         line_nr += 1;
     }
 
-    let lines: Lines<'static> = slice.lines_at(line_nr);
+    let mut lines: Lines<'a> = slice.lines_at(line_nr);
     lines.reverse();
 
-    range.put_cursor(slice, lines, true);
-    Range::new(range.head, lines)
+    let mut lines = lines.map(rope_is_line_ending).peekable();
+    let mut last_line: usize = line_nr;
+    //
+    for _ in 0..count {
+        while lines.next_if(|&e| e).is_some() {
+            line_nr -= 1;
+        }
+        while lines.next_if(|&e| !e).is_some() {
+            line_nr -= 1;
+        }
+        if lines.next_if(|&e| e).is_some() {
+            line_nr -= 1;
+        }
+        if line_nr == last_line {
+            break;
+        }
+        last_line = line_nr;
+    }
+
+    let head = slice.line_to_char(line_nr);
+    let anchor = if movement == Movement::Move {
+        if prev_empty_to_line && first_char {
+            range.cursor(slice)
+        } else {
+            range.head
+        }
+    } else {
+        range.put_cursor(slice, head, true).anchor
+    };
+
+    Range::new(anchor, head)
 }
